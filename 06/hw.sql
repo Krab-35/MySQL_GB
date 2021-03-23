@@ -40,19 +40,15 @@ WHERE
 
 -- задание 3
 
-SELECT user_id,
-	id
-FROM media
+SELECT COUNT(id)
+FROM likes
 WHERE
 	user_id IN (
-		SELECT user_id
-		FROM profiles
-		ORDER BY TIMESTAMPDIFF(YEAR, birthday, NOW())
-		LIMIT 10
-		)
-
-
-
-
-	
-
+		SELECT * FROM (
+			SELECT user_id
+			FROM profiles
+			ORDER BY TIMESTAMPDIFF(YEAR, birthday, NOW())
+			LIMIT 10
+			) AS smth
+	)
+;
