@@ -52,3 +52,33 @@ WHERE
 			) AS smth
 	)
 ;
+
+-- задание 4
+
+SELECT IF(
+	(
+	SELECT COUNT(user_id)
+	FROM (
+		SELECT
+			user_id
+		FROM
+			profiles
+		WHERE
+			gender = 'm'
+	) AS smth1
+	)
+	>
+	(
+	SELECT COUNT(user_id)
+	FROM (
+		SELECT
+			user_id
+		FROM
+			profiles
+		WHERE
+			gender = 'f'
+	) AS smth1
+	),
+	'male more female',
+	'female more male'
+)
