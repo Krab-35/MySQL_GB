@@ -82,3 +82,4 @@ SELECT IF(
 	'male more female',
 	'female more male'
 )
+;
