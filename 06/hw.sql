@@ -55,7 +55,7 @@ WHERE
 
 -- задание 4
 
-SELECT IF(
+SELECT IF (
 	(
 	SELECT COUNT(user_id)
 	FROM (
@@ -77,9 +77,86 @@ SELECT IF(
 			profiles
 		WHERE
 			gender = 'f'
-	) AS smth1
+	) AS smth2
 	),
 	'male more female',
 	'female more male'
 )
+;
+
+-- задание 5
+
+SELECT
+	`firstname`,
+	`lastname`
+FROM
+	users
+WHERE
+	id IN (
+		SELECT * FROM (
+			SELECT
+				`user_id` 
+			FROM (
+				SELECT
+					`user_id`,
+					COUNT(`user_id`) AS 'count'
+				FROM
+					`users_communities`
+				GROUP BY
+					user_id 
+				UNION ALL
+				SELECT 
+					`admin_user_id` AS 'user_id',
+					COUNT(`admin_user_id`) AS 'count'
+				FROM
+					`communities`
+				GROUP BY
+					user_id
+				UNION ALL
+				SELECT
+					`initiator_user_id` AS 'user_id',
+					COUNT(`initiator_user_id`) AS 'count'
+				FROM
+					`friend_requests`
+				GROUP BY
+					user_id
+				UNION ALL
+				SELECT
+					`user_id`,
+					COUNT(`user_id`) AS 'count'
+				FROM
+					`likes`
+				GROUP BY
+					user_id
+				UNION ALL
+				SELECT
+					`user_id`,
+					COUNT(`user_id`) AS 'count'
+				FROM
+					`media`
+				GROUP BY
+					user_id
+				UNION ALL
+				SELECT
+					`from_user_id` AS 'user_id',
+					COUNT(`from_user_id`) AS 'count'
+				FROM
+					`messages`
+				GROUP BY
+					user_id
+				UNION ALL
+				SELECT
+					`user_id`,
+					COUNT(`user_id`) AS 'count'
+				FROM
+					`photo_albums`
+				GROUP BY
+					user_id
+			) AS group_table
+			GROUP BY
+				user_id
+			ORDER BY SUM(`count`)
+			LIMIT 10
+			) AS count_all
+		)
 ;
