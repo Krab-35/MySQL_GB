@@ -35,6 +35,28 @@ VALUES
 	('kazan', 'Казань')
 ;
 
+-- easy version:
+
+SELECT
+	id,
+	c1.name AS 'from',
+	c2.name AS 'to'
+FROM 
+	flights
+INNER JOIN
+	cities AS c1
+ON
+	flights.`from` = c1.label
+INNER JOIN 
+	cities AS c2
+ON 
+	flights.`to` = c2.label 
+ORDER BY 
+	id
+;
+
+-- mad version:
+
 SELECT
 	table_from.id,
 	table_from.`from`,
@@ -72,5 +94,3 @@ ON
 	table_from.id = table_to.id
 ORDER BY table_from.id
 ;
-
-		
